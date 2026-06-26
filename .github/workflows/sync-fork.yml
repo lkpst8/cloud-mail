@@ -2,7 +2,7 @@ name: 🔄 自动同步上游仓库 / Auto Sync Fork
 
 on:
   schedule:
-    # ⏱️ 定时任务：每周一的凌晨 0:00 (UTC 时间) 自动运行，相当于北京时间周一早上 8:00
+    # ⏱️ 定时任务：每周一的凌晨 0:00 (UTC 时间) 自动运行
     - cron: '0 0 * * 1'
   
   # 💡 允许你在 GitHub 网页端随时手动点击 "Run workflow" 强制同步
@@ -17,14 +17,16 @@ jobs:
       - name: 🚚 检出代码仓库 / Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # 必须获取完整的历史记录，否则同步会报错
+          fetch-depth: 0 # 必须获取完整的历史记录
 
       - name: 🔄 同步上游代码 / Sync Upstream
         uses: aormsby/Fork-Sync-With-Upstream-action@v3.4.1
         with:
           target_repo_token: ${{ secrets.GITHUB_TOKEN }}
-          # ⚠️【请修改这里】改成原作者的 GitHub 用户名/仓库名
-          upstream_repository: maillab/cloud-mail   
-          upstream_branch: main                       # 原作者的主分支名（通常是 main）
-          target_branch: main                         # 你自己的主分支名
-          test_mode: false                            # 设置为 false 才会真正写入并推送代码
+          # ⚠️【修正后的参数名】改成原作者的 GitHub 用户名/仓库名
+          upstream_sync_repo: maillab/cloud-mail   
+          # ⚠️【修正后的参数名】原作者的主分支名
+          upstream_sync_branch: main                       
+          # ⚠️【修正后的参数名】你自己仓库中需要同步的分支名
+          target_sync_branch: main                         
+          test_mode: false
